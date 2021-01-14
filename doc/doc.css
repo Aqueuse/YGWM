@@ -1,0 +1,16 @@
+/* ygwm/doc/doc.css
+ created by whygee@f-cpu.org 20140221
+ */
+pre{
+  background-color:#eee;
+}
+pre.result{
+  border:1px dotted #aaa;
+}
+pre.example{
+  background-color:#ddd;
+  border:1px dotted #aaa;
+}
+h3{
+  background-color:#ccc;
+}

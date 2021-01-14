@@ -1,0 +1,77 @@
+<html><head><title>YGWM: YG's JavaScript window manager and toolkit</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="icon" type="image/gif" href="data:image/gif;base64,R0lGODdhEAAQAMIIADJFa0lWe3Z4dWl2zYSX8Lm7uNnT0vv//SwAAAAAEAAQAAADVDgwBE7KqeYAtXA1xS/5TCMeZGma31Ecgkq2RpkKBt0KBS606WmupNmr1GIFCS5dK5fjIUtA30FYLBqPrAJzp9JNn66oKxj4mM/ogBrNJqjfbfM7AQA7">
+
+<style type="text/css">
+div.logos_agplv3-88x31_png{
+  background: url(data:image/png;base64,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) no-repeat center;
+  border:0px;
+  width:88px;
+  height:31px;
+  padding: 3px;
+  float:right;
+}
+</style>
+
+</head><body>
+<pre style="font-size:70%">Created 2013-08-06 by Yann Guidon
+Version 2014-02-23</pre><hr>
+
+<p>&nbsp;</p>
+<h2>Welcome to the YGWM project's homepage !</h2>
+<p>
+YGWM is <i>Whygee's Window Manager</i>, a lightweight client-side JavaScript toolkit and modular environment that turns
+your website into an application (or vice versa).</p>
+
+<center>
+<img width="517px" height="661px" src="images/SS_ygwm.png"
+  alt="Screen capture of a basic ygwm use"
+title="Screen capture of a basic ygwm use">
+</center>
+
+<p>Here is a little <a target="_blank" href="http://archives.yasep.org/ygwm.mp4">video demo</a>
+of the window manager's features in action.</p>
+
+<p>It was created in 2009 for the <a target="_blank" href="http://yasep.org/">YASEP</a> project's website.
+Here you will find the source code, API, examples and tutorials so you can use it in your own projects.</p>
+
+<p>YGWM offers more than fancy minimalistic windows. It provides services such as themes, uniform drag-and-drop or data entry,
+minimisation and compaction of the whole site, internationalisation (language picker), file save and load, cookie management,
+an unbounded virtual desktop, a system of "keys" to call windows from anywhere, custom hyperlinks and quite a few other
+gadgets... It's like a browser in your browser yet it remains space-conscious, making it load and run fast!</p>
+
+<p><div class="logos_agplv3-88x31_png" title="GNU Affero GPLv3"></div>
+YGWM is Free Softwware ! It is available under the <a target="_blank" href="license/agpl.txt">GNU Affero GPLv3</a> license.
+Basicly, you may use it as long as the whole website's source code is available for download.</p>
+
+<p>YGWM ranked 2nd ex-aequo at the Open World Forum Code Contest in Paris in september 2011.</a>
+
+<p>&nbsp;</p>
+<i>Still under construction :-)</i>
+
+<p>&nbsp;</p>
+In this site :
+<ul>
+ <li><a href="ygwm">ygwm</a> contains the source code</i>
+ <li><a href="doc">doc</a> contains the documentation and explains the source code
+  <ul>
+    <li><a href="doc/01_utils.js.html">doc/01_utils.js.html</a> : basic functions used throughout the code</li>
+    <li><a href="doc/02_lang.js-i8n.js.html">doc/02_lang.js-i8n.js.html</a> : multi-language support</li>
+    <li><a href="doc/03_application.js.html">doc/03_application.js.html</a> : some site customisation</li>
+    <li><a href="doc/04_init.js.html">doc/04_init.js.html</a> : organises the site's modules and initialisation</li>
+  </ul></i>
+ <li><a href="ygwm.tgz">ygwm.tgz</a> contains the whole site so you can use the files on your own computer.</i>
+</ul>
+
+<p>&nbsp;</p>
+
+<hr>
+<p style="font-size:70%">
+Funny trivia, courtesy of Jeff from Wales :<br>
+<i>Actually Gwm is the dative form of Cwm, which means the Valley.<br>
+"Y cwm" would be "the valley"<br>
+"o gwm" would be "to the valley".<br>
+Most welsh speakers would probably understand y-gwm as y-cwm.</i>
+</p>
+
+</body></html>

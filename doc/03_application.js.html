@@ -1,0 +1,52 @@
+<html>
+<head>
+ <title>YGWM: application.js</title> 
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <link rel="stylesheet" type="text/css" href="doc.css">
+ <script type="text/javascript" src="../ygwm/utils.js"></script>
+ <script type="text/javascript" src="../ygwm/i8n.js"></script>
+ <script type="text/javascript" src="../ygwm/lang.js"></script>
+ <script type="text/javascript" src="../ygwm/application.js"></script>
+ <script type="text/javascript" src="autoexec.js"></script>
+</head>
+<body onload="start()">
+
+<tt style="font-size:70%"><a href="http://ygwm.org">Back to the homepage</a><br>
+<a href="02_lang.js-i8n.js.html">Previous page</a><br>
+<a href="04_init.js.html">Next page</a><br>
+Created 2014-02-22 by Yann Guidon<br>Version 2014-02-22</tt><hr>
+
+<h3>ygwm/application.js</h3>
+
+<p><a href="../ygwm/application.js">This file</a> is where some parts of the website are
+customised. This handles the window's title and some safety hooks are setup.
+Since the error message may need to be localised, lang.js and i8n.js need to be included before.</p>
+
+<pre>mainTitlePrefix="yasep.org: ";
+mainTitle="";
+
+function changeMainWinTitle(m) {
+  document.title=mainTitlePrefix+
+     (mainTitle=m); // save for later, if we change the prefix
+}
+
+window.onerror=function(msg, url, l){
+  alert(I8N("Ierr1")+msg
+       +I8N("Ierr2")+l
+       +I8N("Ierr3"));
+  return false
+}</pre>
+
+<pre class="example">mainTitlePrefix="ygwm.org: ";
+changeMainWinTitle("Hello !");
+
+getById("R").onclick=function(){
+  var i=bogusvariablename;
+}
+""
+</pre>
+
+<button id="R">Trigger an error</button>
+
+</body>
+</html>

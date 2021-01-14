@@ -1,0 +1,502 @@
+<html>
+<head>
+ <title>YGWM: utils.js</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <link rel="stylesheet" type="text/css" href="doc.css">
+ <script type="text/javascript" src="../ygwm/utils.js"></script>
+ <script type="text/javascript" src="autoexec.js"></script>
+</head>
+<body onload="start()">
+
+<tt style="font-size:70%"><a href="http://ygwm.org">Back to the homepage</a><br>
+<a href="02_lang.js-i8n.js.html">Next page</a><br>
+Created 2013-09-27 by Yann Guidon<br>Version 2014-02-22</tt><hr>
+
+<h3>ygwm/utils.js</h3>
+
+<p><a href="../ygwm/utils.js">This file</a> contains a collection of miscellaneous functions with a global scope.
+They are mostly very simple but create a necessary foundation for the YGWM code and provide useful
+functions for other modules.</p>
+
+<p>The coding style is "compact" and comments can be removed by a module.
+Compaction may also change (shorten) some names so single-character variable names are widely used.
+</p>
+
+<h3>DOM Shortcuts</h3>
+
+<p>
+Let's start with a couple of shortcuts. They are used <i>a lot</i>
+in YGWM and in user modules, they contain lines that are quite cumbersome to write in full.
+</p>
+
+<pre>
+function dcE(a){
+  return document.createElement(a);
+}
+
+function rC(e){
+  e.parentNode.removeChild(e);
+}
+</pre>
+
+<p>
+The classic functions are not enough, so I wrapped them with some personal code,
+that can restrict and accelerate execution.
+</p>
+
+<pre>
+// Beware : getById and getByClass are different !
+function getById(id,tag,base) {
+  base=base||document;
+  tag=tag||"*";
+
+  var i, t=base.getElementsByTagName(tag);
+  for (i=0; i&lt;t.length; i++) {
+    if (t[i].id && (t[i].id == id))
+      return t[i];
+  }
+  return null;
+}
+
+function getByClass(className,tag,base) {
+  base=base||document;
+  tag=tag||"*";
+
+  var i, t=base.getElementsByTagName(tag);
+  for (i=0; i&lt;t.length; i++) {
+    if(t[i].className && (t[i].className==className))
+      return t[i];
+  }
+  return null;
+}
+</pre>
+
+<p>The following code locates a DIV, and either creates or removes an element inside it.</p>
+
+<pre class="example">var container=getById("container","DIV");
+var counter=1;
+
+getById("create").onclick=function() {
+  var d=dcE("BUTTON");
+  d.innerHTML=counter++;
+  container.appendChild(d);
+}
+
+getById("erase").onclick=function() {
+  rC(container.firstChild);
+}
+""
+</pre>
+
+<p><button id="create">Create</button> &nbsp;
+<button id="erase">Erase</button>
+</p>
+
+<div id="container" style="margin:2px; border:2px solid black;">
+</div>
+
+<p>The following function is one of the most used User Interface gadget:
+it switches an element from hidden to visible (or vice versa).
+Note that it is different from making the element visible and still take
+its space on the screen.
+</p>
+
+<pre>
+function toggle(a){
+  a=a.style;
+  return a.display
+    =(a.display=="none")?"block":"none";
+}
+</pre>
+
+<pre class="example">getById("showhide").onclick=function() {
+  toggle(getById("showme"));
+}
+""</pre>
+
+<button id="showhide">Show/hide</button>
+
+<div id="showme" style="background:#4DA;">
+Hi there !
+</div>
+<h3>Coordinates and dimensions</h3>
+
+<p>Those functions read coordinates and dimensions in a mostly portable way.
+</p>
+
+<pre>
+function mousePos(e) {
+  e = e || window.event;
+  var t = document.body || document.documentElement;
+  return {
+    x: e.pageX || e.clientX + t.scrollLeft,
+    y: e.pageY || e.clientY + t.scrollTop
+  };
+}
+</pre>
+
+<p>See the <tt>delay()</tt> example for how to use <tt>mousePos()</tt>.</p>
+
+<pre>function getHeight(){
+  return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+}
+
+function getWidth(){
+  return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+}
+</pre>
+
+<pre class="example">
+"Window size: "+getHeight()+"x"+getWidth()</pre>
+
+
+
+<h3>Empty</h3>
+
+<p>Some places need to specify a callback function but it is not always desired
+or available. Writing <tt>emptyFunc</tt> is shorter than <tt>function(){}</tt>...
+</p>
+
+<pre>
+function emptyFunc(a){
+  // empty, as the name says
+  return a; // yeah... but useful anyway here and there
+}
+</pre>
+
+<h3>Refresh the screen</h3>
+
+<p>In certain cases, you need to let the display be refreshed before doing something else.
+The display is updated when there is nothing left to do, so just stop doing anything,
+terminate all the functions. But how to then do "something else" ? The solution is to
+register it as a function and call <tt>redraw()</tt> with this function as argument.
+</p>
+
+<p>I've had some issues with some browsers, I hope that it works well now.
+Webkit-based browsers might still be problematic...
+</p>
+
+<pre>
+i="requestAnimationFrame";
+redraw=window[i]  
+     ||window["moz"+i]  
+     ||window["webkit"+i]
+     ||window["ms"+i]                 
+     ||function(f){ setTimeout(f,0); };
+</pre>
+
+<p>The current code thread (like processing an event)
+must end before the next action (indicated as an argument) can be executed,
+thus it does not matter where exactly you call this function, but beware anyway.</p>
+
+
+
+<h3>Anti-congestion</h3>
+
+<p>The following code is another important feature that helps to
+keep the user interface responsive. It executes a callback function
+when the delay function has not been called for a certain time,
+or when it has been called a certain number of times.
+If you have graphic elements to update, for example,
+they can be updated less often and with more relevant informations.
+</p>
+
+<p>
+</p>
+
+<pre>
+// Generic anti-congestion for the UI :
+// gets an object and performs the action after a delay or until a counter reached 0
+function delay(o){
+  if (o.timer){
+    clearTimeout(o.timer);
+    o.timer=null; // necessary ?
+  }
+
+  if (o.max) {
+    if (o.counter){
+      o.timer=setTimeout(function(){
+        o.counter=o.max;
+        o.timer=null; // necessary ?
+        o.func();
+      },o.delay);
+      o.counter--;
+    }
+    else {
+      o.func();
+      o.counter=o.max;
+    }
+  }
+
+  else {  // max is absent : just delay.
+    o.timer=setTimeout(function(){
+      o.timer=null; // necessary ?
+      o.func();
+    },o.delay);
+  }
+}
+</pre>
+
+<p>The argument is an object with the following elements :
+</p>
+
+<pre>
+  delayObj:{
+    delay:300,  // ms
+    max:10,     // number of calls until the function is forcefully called
+    counter:10, // you can initialise the counter
+    timer:null, // The return value of setTimeout is preserved so it can be cancelled by clearTimeout
+    func:function(){
+      // do something here
+    }
+  }
+</pre>
+
+<p>There are two ways to use this tool :
+</p>
+
+<h4>Simple blocked/delayed action</h4>
+
+<p>This behaves like a retriggerable monostable : as long as you call
+this function often enough, it will not be executed. Only
+the last call will be executed after a set delay. All the previous
+calls will be lost.</p>
+
+<p>This is used by User Interface elements, such as when moving windows,
+to prevent events from overloading the computer with heavy graphical operations.
+In this case, omit the <tt>max</tt> element in <tt>delayObj</tt></p>
+
+
+
+<h4>delayed action with regular release</h4>
+
+<p>Providing user feedback from the UI sometimes requires that
+one out of every N events is normally processed.
+This N can be given in the <tt>max</tt> element
+of the delay object.
+</p>
+
+<p>You may even control how soon the release is called
+by setting the <tt>counter</tt> element to 0 for example)</p>
+
+<pre class="example">var div=null;
+
+var mode=0;
+var coord={};
+
+function move_div(){
+  if (div) { // div might have been erased when setTimeout executes
+    div.style.top=coord.y+2;
+    div.style.left=coord.x+2;
+  }
+}
+
+var mouse_delay={
+  delay:300,  // ms
+  max:10,     // number of calls until the function is forcefully called
+  counter:10, // you can initialise the counter
+  func: move_div
+}
+
+function MouseMov(e){
+  coord=mousePos(e);
+  if (mode==0)
+    move_div();
+  else
+    delay(mouse_delay);
+}
+
+getById("normal").onclick=function() {
+  mode=0;
+}
+
+getById("blocked").onclick=function() {
+  mode=1;
+  mouse_delay.max=0;
+  mouse_delay.counter=0;
+}
+
+getById("released").onclick=function() {
+  mode=2;
+  mouse_delay.max=10;
+  mouse_delay.counter=10;
+}
+
+getById("startstop").onclick=function() {
+  if (div==null) {
+    div=dcE("DIV");
+    var s=div.style;
+      s.position="absolute";
+      s.height=
+      s.width="50";
+      s.backgroundColor="#CD2";
+    document.body.appendChild(div);
+    document.onmousemove = MouseMov;
+  }
+  else {
+    document.onmousemove = null;
+    rC(div);
+    div=null;
+  }
+}
+null
+</pre>
+<p><button id="startstop">Start/stop demo</button> &nbsp;
+<button id="normal">Normal mode</button> &nbsp;
+<button id="blocked">Blocked mode</button> &nbsp;
+<button id="released">Released mode</button></p>
+
+<p>&nbsp;</p>
+
+
+<h3>Tables</h3>
+
+<p>When you import HTML code, the DOM can be cluttered with extra elements
+that are more a disturbance than anything else. So I wrote some code to clean tables
+and remove the parasites.
+</p>
+
+<pre>
+//////////////////////////////////////////////////////
+// cleanup a table, remove any #text and #comment
+// nodes inbetween the TR TH and TDs (proved to be necessary......)
+function cleanup_table(id) {
+  var t=id.firstChild, t2;
+
+  // scan the tbody
+  while (t) {
+    // preload the next sibling because we might remove t
+    t2=t.nextSibling;
+    switch(t.nodeName) {
+      case "TBODY": // recurse
+      case "TR":    // recurse
+        //alert("recursing in "+t.nodeName);
+        cleanup_table (t);
+        // fold !
+      case "TH":
+      case "TD": break; // ne fait rien, passe au suivant
+
+      default : // enlève le tag (c'est un screugneugneu de #text)
+        //alert("removing "+t.nodeName);
+        rC(t);
+    }
+    t=t2;
+  }
+}
+</pre>
+
+<pre class="example">function explore_DOM(e) {
+  var s="";
+  e=e.firstChild;
+  while(e) {
+    s+=e.nodeName;
+    if (e.textContent!="")
+      s+=':"'+e.textContent+'"';
+    if (e.firstChild)
+      s+="["+explore_DOM(e)+"]";
+    s+=',';
+    e=e.nextSibling;
+  }
+  return s;
+}
+
+var test=getById("table_test","TABLE");
+var m=explore_DOM(test);
+
+m+="\n\n Now let's clean this up :\n\n";
+cleanup_table(test); // note: this is destructive
+m+=explore_DOM(test);
+
+m;
+</pre>
+
+<u>table_test:</u>
+
+<table id="table_test" border="1">
+ <tr>
+  <th>This</th>
+  <th>is</th>  <!-- and here is a comment -->
+  <th>a</th>
+ </tr>
+ <tr>
+  <td>simple  <!-- comments embedded in TD/TH are not removed however ! --> </td>
+  <td>test</td>
+  <td>table</td>
+ </tr>
+</table>
+
+<h3>YGWM-specific</h3>
+
+<p>The following code is used extensively by modules that reside in windows.
+For example, when you click on an element, the code needs some context, that
+is often associated to the YGWM window object. <tt>parentWin</tt> navigates
+the DOM to find the parent windows.
+</p>
+
+
+<pre>
+function parentWin(w){
+  // get back to the root of the tree of a window, searching a content_id
+  while (w) {
+    if (w.contents_id)
+      break;
+    w=w.parentNode;
+  }
+  return w;
+}
+</pre>
+
+<p>Examples will be shown in later pages.</p>
+
+<h3>Random shortcut</h3>
+
+<p>
+Random numbers are used and this function makes them shorter to write and get:
+</p>
+
+<pre>
+function intrnd(x) {
+  return Math.floor(Math.random()*x);
+}
+</pre>
+
+<p>Generated numbers range from 0 to x-1.</p>
+
+<pre class="example">var m=[], i;
+for (i=0; i&lt;10; i++)
+  m.push(intrnd(10));
+m;</pre>
+
+<h3>Misc. text</h3>
+
+<p>Those are quite handy too : they add spaces so text is aligned.
+</p>
+
+<pre>
+function pad_right(s, n) {
+  n-=(s+"").length;
+  while (n-- > 0)
+    s+=" ";
+  return s;
+}
+
+function pad_left(s, n) {
+  n-=(s+"").length;
+  while (n-- > 0)
+    s=" "+s;
+  return s;
+}
+</pre>
+
+<pre class="example">var m="", n="", i;
+for (i=0; i&lt;12; i++){
+  m+=pad_left(i,2)+":"+pad_right("foo",i)+"↲\n";
+  n+=pad_left(i,2)+":"+pad_left ("bar",i)+"↲\n";
+}
+m+'\n'+n;</pre>
+
+<p>&nbsp;</p>
+
+<hr>
+
+</body></html>

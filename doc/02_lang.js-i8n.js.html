@@ -1,0 +1,232 @@
+<html>
+<head>
+ <title>YGWM: lang.js and i8n.js</title> 
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <link rel="stylesheet" type="text/css" href="doc.css">
+ <script type="text/javascript" src="../ygwm/utils.js"></script>
+ <script type="text/javascript" src="../ygwm/i8n.js"></script>
+ <script type="text/javascript" src="../ygwm/lang.js"></script>
+ <script type="text/javascript" src="autoexec.js"></script>
+</head>
+<body onload="start()">
+
+<tt style="font-size:70%"><a href="http://ygwm.org">Back to the homepage</a><br>
+<a href="01_utils.js.html">Previous page</a><br>
+<a href="03_application.js.html">Next page</a><br>
+Created 2014-02-21 by Yann Guidon<br>Version 2014-02-22</tt><hr>
+
+<p>YGWM supports different languages through two files, one for the translations and one for the code.
+A <a target="_blank" href="http://yasep.org/#!tuto/translations">tutorial</a> explains the necessary steps
+if you want to add a new language.</p>
+
+<h3>ygwm/i8n.js</h3>
+
+<p><a href="../ygwm/i8n.js">This file</a> contains a collection of strings inside
+a single big object named <b>i8n</b>. It's a database for localisation of the YGWM
+interface as well as the rest of the application. You are encouraged to add
+new definitions or languages, but be careful if you ever touch existing strings.</p>
+
+<p>The database is a simple JavaScript object and the syntax must follow certain rules.
+The format for one entry looks like this :
+</p>
+
+<pre>
+  keyword:[
+    "english string",
+    "version française",
+    "versión española",
+    "deutsch Version"
+  ],
+</pre>
+
+<p>Don't forget the commas. If a translation in a given language does not exist for the entry,
+the string can be left out. The default version is english, the first string.
+And <i>in certain cases</i> (only when used by <b><tt>I8N()</tt></b>)
+if this string does not exist, the name of the entry is used as a string.
+So an apparently empty entry is also valid and the following entry means that the first
+and second strings are the same as the name:
+</p>
+
+<pre>  version:[,
+       ,
+       "versión",
+       "Version"],</pre>
+
+<p>The file contains strings that belong to documentation where lines are identical
+across several files. This saves a bit of space.
+</p>
+
+<p>Other hints and advices are found in the file's header and in the tutorial.
+It is pretty "code-free" and does not require computer skills, as long as you
+respect the syntax.
+</p>
+
+<h3>ygwm/lang.js</h3>
+
+<p><a href="../ygwm/lang.js">This file</a> (included <i>after</i> i8n.js) contains code that manages the language
+and switches between them. It reads the <b>i8n</b> object to deliver the right localised
+message, if it's available.</p>
+
+<p>
+The file starts with the <b>LANG</b> object, that contains a few variables and a function for later.<br>
+
+<b><tt>LN</tt></b> is the currently chosen language (it's a 2-char string). It first gets set by this file
+ when the browser language is detected, then it might be changed by cookies, and the visitor can change it again.<br>
+<b><tt>FLAGS</tt></b> is an array of HTML code that create a DIV whose class is a CSS inline logo, it's built later in menu.js<br>
+<b><tt>change_innerHTML</tt></b> is an array of pairs : one DOM element (usually a DIV) is linked to a <b><tt>i8n</tt></b> entry.
+ When the language is switched, this array is scanned and all the DOM elements get rewritten with a string that corresponds to
+  the new language. At one point, the "title" (info-bubbles) of the elements was also changeable but this has been removed, 
+  since it's only a minor improvement.<br>
+Entries get added to <b><tt>change_innerHTML</tt></b> as more windows are created so there is a risk of memory leak here.
+Be extra careful to remove entries when the window is destroyed.
+</p>
+
+<pre>LANG={
+  supported:false,
+  LN:"", // the selected language string, can be different from browsLang
+
+  // inline images to save some HTTP requests
+  FLAGS:[], // initialised by init_obj / menu.js
+
+  change_innerHTML: [], // beware of memory leaks !
+
+  change_lang: function(i){
+    i=+i; // in the case where the argument is a string
+
+    var j,k;
+    if ((i<0)||(i>=i8n.LANGS.length))
+      i=0;
+
+    LANG.LN=i8n.LANGS[
+              LNG=i];
+    cookies.save(); // see later
+    changeMainWinTitle(I8N("welc").replace(/&nbsp;/gi," ")); // application.js
+
+    // change the contents of DOM objects
+    for (j in LANG.change_innerHTML){
+      if (k=LANG.change_innerHTML[j])
+        k[0].innerHTML=k[1][i] || k[1][0];
+    }
+  }
+};
+</pre>
+
+<p>Then there is some code to detect the browser's native language and make a preliminary guess,
+in case there was no previous cookie. A couple of globals are introduced:</p>
+
+<pre>
+// detect the browser's language : 20120829
+browsLang=(navigator.language||navigator.browserLanguage).slice(0,2);
+
+// LNG may be changed later when reading the cookies, it
+// could become any large integer number, as it gets encoded/decoded in base66.
+LNG=i8n.LANGS.indexOf(browsLang);
+if (LNG<0)
+  LNG=0;
+else
+  LANG.supported=true;</pre>
+
+<p>This is followed by a few useful functions. <b><tt>I8N()</tt></b> is the most used,
+as it translates a keyword into a localized string, depending on the current chosen language.
+<b><tt>Al8N()</tt></b> is mostly the same except that it creates an alert window and the
+argument can contain litteral strings.</p>
+
+<pre>function I8N(i,t){ // dirty variable generation syntax... t is not a parameter...
+  t=i8n[i];
+  if (!t)
+    return i; // alert("lang.js: unknown message "+i);
+  if (t[LNG])
+    return t[LNG];
+  return t[0] || i; // if t[0] doesn't exist, return the original parameter.
+} // Note : I8N can return an array of strings. Or anything else in an array stored in i8n.js !
+
+// Alert with a variable length argument,
+// interpret "" as followed by a litteral argument,
+// otherwise use an internationalised string :
+function Al8N(){
+  var i=0,s="",t,a,l=LNG;
+  while (typeof(a=arguments[i++])!="undefined"){
+    if (a=="")
+      s+=arguments[i++];
+    else
+      s+=I8N(a);
+  }
+  alert(s)
+}
+</pre>
+
+<p>Then a couple of function. generated() is not very exciting but setHTML()
+is interesting as it adds a DOM element to the list change_innerHTML,
+and fills it with a preliminary value.</p>
+
+<pre>// used by yasmed.js, gen_asm.js, config.js...
+function generated(c,tool){
+  return "\n"+c+" "+I8N("Generated on")+" "+new Date().toGMTString() +"\n"
+             +c+" "+I8N("by")+" "+document.location+"\n"
+             +c+"    yasep/"+tool+" "+I8N("version")+" "+VERSION+"\n";
+}
+
+// used by menu.js
+function setHTML(o,t){
+  // o = DOM object to fill
+  // t : string or array of strings
+  if (typeof t != "string") {
+    // suppose it's an array (because the contents is not optional
+    if (t.length > 1)
+      LANG.change_innerHTML.push([o,t]);
+    t=t[LNG] || t[0];
+  }
+  o.innerHTML=t;
+}
+</pre>
+
+<p>Here is some code that shows how those functions might be used:</p>
+
+
+<pre class="example">cookies={save:emptyFunc};
+changeMainWinTitle=emptyFunc; //wil be seen later;
+
+s="Default browser language : "+i8n.LANGS[LNG];
+
+// show a localised alert box when clicking on a certain button :
+getById("alert").onclick=function(){
+  Al8N("msg","nf");
+}
+
+// executed when one clicks on a language change button:
+function changeLang(){
+  LANG.change_lang(this.language);
+}
+
+// create an array of buttons to select the language
+var d=getById("ex"),
+    p=d.parentNode;
+for (var i in i8n.LANGS) {
+  var e=dcE("BUTTON");
+  e.language=i; //create a local copy of the counter
+  e.innerHTML=i8n.LANGS[i];
+  e.onclick=changeLang;
+  p.insertBefore(e,d);
+}
+
+// register places to update when the language changes
+setHTML(d, i8n.welc);
+setHTML(getById("lng"), i8n.LANGUAGES);
+
+// update the messages :
+LANG.change_lang(LNG);
+
+s
+</pre>
+Current browser language: <span id="lng">none</span><br>
+<button id="alert">Alert!</button><br>
+<div id="ex"></div>
+
+<hr>
+<p>
+At this point, you should have a good idea about how multiple languages are managed.
+There's quite a "ad hoc" in the system, that might sometimes become a bit confusing,
+but it's flexible, has undergone a few evolutions and it gets the job done.
+</p>
+</body>
+</html>

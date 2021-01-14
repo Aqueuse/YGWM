@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<head>
+<title>Welcome to this application !</title>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+
+<link href="ygwm.css"    rel="stylesheet" type="text/css">
+<link href="winlist.css" rel="stylesheet" type="text/css">
+<link href="menu.css"    rel="stylesheet" type="text/css">
+
+<script type="text/javascript">
+init_obj=[]; // used for larger systems
+function blackList(){} // used for minimizations
+</script>
+<script type="text/javascript" src="../i8n.js"></script>
+<script type="text/javascript" src="lang.js"></script>
+<script type="text/javascript" src="ygwm.js"></script>
+<script type="text/javascript" src="ygwm-colors.js"></script>
+<script type="text/javascript" src="ygwm-options.js"></script>
+<script type="text/javascript" src="winlist.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript" src="winman.js"></script>
+<script type="text/javascript" src="ygwm.demo.js"></script>
+</head>
+
+<body onload="body_start()">
+
+<div id="BigRedWarning" style="color:red; text-align:center">
+<p>You read this message because there is an internal bug, you are a search engine, JavaScript<br>
+is disabled or your connection is too slow but most probably you don't use Firefox<br>
+or a decent web browser. Notably, MSIE could not work here. Sorry.<br>
+Check your JavaScript error console, just in case.</p>
+</div>
+
+<div id="win_welcome">
+<h1>Welcome ! Bienvenue ! Willkommen ! etc.</h1>
+<p>
+Juste une petite démo de fenêtres dynamiques, le code n'est pas complet mais montre l'usage de quelques extensions de YGWM,
+un gestionnaire de contenu créé pour <a href="http://yasep.org">yasep.org</a>.</p>
+<p><i>Note : testé OK sous Firefox, Seamonkey, Omniweb, Shiira, Safari, Konqueror,
+   Chrome et Opera, mais aucune garantie pour MSIE ou Camino.</i>
+</p>
+<p>
+Liste des autres fenêtres qui peuvent être ouvertes dans d'autres fenêtres :<ul>
+<script type="text/javascript">
+    for (var i in winman.window_keys)
+      document.write('<li><a href="#!'+i+'" onclick="winman.activate_window(\''+i+'\')">'+i+'</a></li>');
+</script>
+</ul>
+</div>
+
+<div style="display:none">
+<!-- the innerHTML of the following DIVs will be just copied when needed, not moved to a window -->
+
+<div id="contents1">
+<p><tt>Sun Feb 15 04:09:09 CET 2009</tt></p>
+<strong>*</strong> Le déplacement à la souris ainsi que le clic-to-focus sont OK<br>
+<strong>*</strong> redimensionnement en bas (à gauche et à droite) : ok<br>
+<strong>*</strong> minimisation/restauration : simpliste mais OK.<br>
+<strong>*</strong> Effacement : bouton ajouté, optionnel.<br>
+ Un callback peut aussi être fourni pour déterminer si une fenêtre doit
+ être effacée à la fin d'un déplacement (pour faire un drag&drop dans une poubelle par exemple)<br>
+<strong>*</strong> Masquage provisoire du contenu de la fenêtre lorsque l'affichage est trop lent
+  durant les déplacements et redimensionnements<br>
+<strong>*</strong> Autoscroll ajouté pour "naviguer"
+dans d'immenses espaces de travail (32000 pixels de large et de long avec Opéra, encore plus sous Firefox)<br>
+</div> 
+
+
+<div id="contents2">
+<p>
+Cette fenêtre n'a pas de zone de redimensionnement ni de zone de message,
+c'est fait exprès et ça peut être utile dans certains cas.
+</p>
+<p>On ne peut pas la fermer non plus.</p>
+<p>Par contre on peut l'ouvrir en de nombreux exemplaires.
+</div> 
+
+
+<div id="contents3">
+Petite fenêtre.
+</div>
+
+
+<div id="contents4">
+<p>Cette fenêtre est placée aux coordonnées 30000&times;30000 et on peut étendre
+l'espace de travail dynamiquement. Essayez de zoomer/dézoomer avec CTRL+, CTRL- et CTRL0 !
+</p>
+<br>&nbsp;</br>
+
+<p style="text-decoration:underline">Explications:</p>
+<ul>
+<li>L'objet <tt>ygwm</tt>
+contenu dans le fichier JavaScript contient toute la machinerie nécessaire
+(variables et fonctions) pour faire fonctionner les fenêtres.</li>
+<br>
+
+<li>Les fenêtres sont placées dans le DOM dans un ordre particulier
+afin d'obtenir un recouvrement donné. Attention, le code HTML
+doit définir leur place dans le même ordre que le code JS de création
+de fenêtres, pour éviter un effet de bord désagréable de focus des fenêtres.
+</li>
+<br>
+
+<li>Le contenu des fenêtres peut être soit
+<ul>
+<li> vide (argument "none"),</li>
+<li> un autre élément (donné en argument au lieu de "none"),</li>
+<li> l'élément donné par l'argument de place (argument <tt>null</tt>)</li>
+</ul>
+Donc une fenêtre peut être créée avant ou après la création de son contenu.
+</li>
+<br>
+
+<li>
+Les DIVs des fenêtres contiennent aussi des variables et des fonctions privées, suffisantes
+au fonctionnement de chaque fenêtre. Donc c'est un "modèle objet" mais
+l'objet est fondu avec le DIV, pas besoin de conserver l'objet
+créé dans une variable (il reste dans le DOM).
+</li><br>
+
+<li>
+Les fenêtres peuvent avoir leur chapeau et/ou leur pied désactivé à la création.
+Cela rend la fenêtre non redimensionnable et/ou indéplaçable, pour des
+messages d'erreur par exemple. On peut aussi empêcher la fenêtre d'être
+effacée normalement.
+</li>
+</ul>
+</div>
+
+</div> <!-- hidden -->
+
+
+<div id="contents5">
+<pre> yasep/ygwm/ygwm.html : example page
+  for using YGWM and the optional features
+ created Thu Feb  5 11:58:26 CET 2009 by whygee@f-cpu.org
+ version jeu. sept. 22 16:51:48 CEST 2011
+ version jeu. mai 10 06:58:45 CEST 2012
+ version jeu. nov.  8 10:51:21 CET 2012 : cookie fix
+</pre>
+<p>Thanks to the people who helped me make this code better,
+including Laura, Milhouse and Stéphane Moriaux</p>
+<p>You too can have your name in this window by sending me patches and/or finding bugs !</p>
+
+<center><button onclick="ygwm.erase_window(null,this)">OK</button></center>
+
+You can see a "barebone" demo at <a href="ygwm-mini.html">ygwm-mini.html</a>.
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<html>
+<head>
+ <title>YGWM: init.js</title> 
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <link rel="stylesheet" type="text/css" href="doc.css">
+</head>
+<body onload="start()">
+
+<tt style="font-size:70%"><a href="http://ygwm.org">Back to the homepage</a><br>
+<a href="03_application.js.html">Previous page</a><br>
+<a href="05_.js.html">Next page</a><br>
+Created 2014-02-22 by Yann Guidon<br>Version 2014-02-23</tt><hr>
+
+<h3>ygwm/init.js</h3>
+
+<p><a href="../ygwm/init.js">This file</a> doesn't do much but prepares a crucial aspect of the
+whole YGWM system. The next files will mostly be "modules" that will be registered by <b>INIT()</b>
+into <b>INIT_list[]</b>.</p>
+
+<pre>
+INIT_list=[]; // cookies, menu, winlist, test_asm, OpcodeTable, asmwin, DOC_GEN, DEF_ASM, template...
+
+function INIT(o){
+  INIT_list.push(o); // add the new module to the list
+}
+</pre>
+
+<p>
+The list will be scanned later by <b>body_start.js</b>. Each module entry point will be executed
+to provide new services. The entry points are:<br>
+* <b>INIT_func()</b> will be called to setup this module as a "second stage" in <b>body_start.js</b>.<br>
+* <b>start()</b> will be called when the corresponding "key" is called.<br>
+* <b>win.trigger()</b> sends data to the module, maybe forcing a refresh or a change in behaviour (it's usually
+given the "parameters" following the # after the key name)<br>
+So a template for a module looks like this:
+</p>
+
+<pre>
+INIT(my_module={
+
+  my_trigger: function() {
+    // change some data, reconfigure stuff...
+  }
+
+  start: function() {
+    // create a window and populate it
+    my_module.win.trigger=my_module.my_trigger;
+  }  
+
+  INIT_func: function(){
+    // add to the menu, things like that
+  }
+});
+</pre>
+
+<p>
+This template is the underlying structure of most of the modules that will be loaded after this file.
+Later, we'll see a more complete template file.
+</p><p>
+Each module will be added in the same order as the files are included.
+A <b>post_init</b> feature is also available for certain modules that need to make a second stage of initialisation.
+</p>
+
+</body>
+</html>
