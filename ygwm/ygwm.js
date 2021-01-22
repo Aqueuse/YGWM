@@ -407,7 +407,18 @@ ygwm = {
             if (w.winlist_item_id) winlist.rename(w.winlist_item_id, val);
         }
     },
-    new_window: function (winTitle, where, contents, w, h, X, Y, erase_callback, footer, header, close_button, really_hide, win_style) {
+    new_window: function (
+        winTitle,
+        where,
+        contents,
+        w, h,
+        X, Y,
+        erase_callback,
+        footer,
+        header,
+        close_button,
+        really_hide,
+        win_style ) {
         if (!ygwm.top_window) {
             (ygwm.top_window = dcE("DIV")).id = "DumbEmptyDiv";
             document.body.appendChild(ygwm.top_window);

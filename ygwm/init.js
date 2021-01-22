@@ -12,19 +12,19 @@ INIT(Welcome = {
         var h = getByClass("hiddenDiv", "DIV", cont);
         winman.patchInnerLinks(cont);
         return ygwm.new_window(
-            "bienvenue",
-            null,
-            cont,
-            Math.ceil((getWidth() * 2) / 3),
-            500,
-            Math.ceil(getWidth() / 6),
-            41,
-            false,
-            true,
-            true,
-            true,
-            false,
-            "welcome");
+            "bienvenue",  // win Title
+            null,  // where (DOM)
+            cont,  // contents
+            Math.ceil((getWidth() * 2) / 3), // width
+            500,  // height
+            Math.ceil(getWidth() / 6), // X
+            41,  // Y
+            false,  // erase callback
+            true,  // footer
+            true,  // header
+            true,  // close button
+            false, // really_hide
+            "welcome");  // win_style
     },
     INIT_func: function () {
         var d = Welcome.div = document.getElementById("MainContents");
