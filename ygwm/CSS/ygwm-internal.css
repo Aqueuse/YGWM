@@ -1,14 +1,6 @@
 body {
     background: white
-}
-
-div.header,
-div.header>table {
-    font-family: monospace;
-    font-size: 9px;
-    color: blue;
-    border: 0px;
-    width: 100%
+    margin: 30px 0px 0px 0px
 }
 
 h1 {
@@ -70,62 +62,6 @@ pre.instr {
     border-top: 2px solid #C8C8D8
 }
 
-a.alias_active,
-a.opcode_active,
-a.opcode {
-    background-color: #A0F8A0;
-    font-size: 16px;
-    font-weight: bold
-}
-
-a.alias_active {
-    background-color: #F8A090
-}
-
-a.asm,
-a.asm_active,
-a.disasm_active,
-a.disasm {
-    font-family: monospace;
-    background-color: #D0D0D0;
-    padding: 1px 3px 1px 3px
-}
-
-a.asm,
-a.disasm {
-    cursor: default
-}
-
-a.asm_active {
-    background-color: #D0FFD0
-}
-
-a.disasm_active {
-    background-color: #D0FFFF
-}
-
-a.opcode_active,
-a.disasm_active,
-a.asm_active,
-a.innerLink {
-    border: 1px dotted #887766
-}
-
-#status {
-    background-color: #F0E8E8;
-    padding: 2px 4px 2px 4px;
-    border: 1px solid #A06060;
-    font-size: 12px;
-    font-family: "Arial, sans serif"
-}
-
-#ASM_messages,
-#messages {
-    padding: 1px 1px 1px 1px;
-    background: white;
-    border: 1px solid #456789
-}
-
 table.regs {
     border-collapse: collapse;
     padding: 0px;
@@ -177,17 +113,6 @@ TD.head {
     background: #E8E8FF
 }
 
-div.code {
-    white-space: pre
-}
-
-div#dump {
-    font-family: monospace;
-    text-align: left;
-    padding: 5px;
-    border: 1px solid #A0D0A0
-}
-
 table.om {
     empty-cells: hide
 }
@@ -229,17 +154,6 @@ table.instr {
     font-size: 15px
 }
 
-div.form {
-    border: 1px dotted #555555;
-    padding: 2px 3px 2px 3px;
-    background-color: #F4F4FC
-}
-
-div.hiddenDiv {
-    display: none;
-    position: relative
-}
-
 textarea#filecontents {
     width: 600px;
     height: 400px;
@@ -252,39 +166,62 @@ textarea#importArea {
     overflow: auto
 }
 
-div.AsmTag {
-    position: relative;
-    float: left;
-    left: 6px;
+p#emitbin_msg,
+p#emitbin_example {
+    font-family: monospace;
+    background-color: #FFF
+}
+
+div.header,
+div.header>table {
+    font-family: monospace;
+    font-size: 9px;
+    color: blue;
+    border: 0px;
+    width: 100%
+}
+
+div.code {
+    white-space: pre
+}
+
+div#dump {
+    font-family: monospace;
+    text-align: left;
+    padding: 5px;
+    border: 1px solid #A0D0A0
+}
+
+div.form {
+    border: 1px dotted #555555;
+    padding: 2px 3px 2px 3px;
+    background-color: #F4F4FC
+}
+
+div.hiddenDiv {
+    display: none;
+    position: relative
+}
+
+.editTextField {
+    font-weight: bold;
+    font-family: monospace;
+    background-color: #FFF;
+    border: 2px solid;
+    border-color: #BBB #EEE #EEE #BBB;
     margin: 2px;
-    background-color: #E8E8F0;
-    font-size: 70%;
-    font-style: italic;
-    cursor: pointer;
-    border: 2px solid #C8C8D8;
-    border-bottom: 3px solid #E8E8F0;
-    padding: 1px
+    padding: 2px
 }
 
-div.AsmTag:hover {
-    background-color: #D8D8E0
-}
-
-div.AsmVoid {
-    height: 8px;
-    border: 0px
+div.configDiv {
+    float: left;
+    padding: .5em
 }
 
 div.autoindex {
     margin: 10px;
     padding: 10px;
     border: 2px dotted #888
-}
-
-p#emitbin_msg,
-p#emitbin_example {
-    font-family: monospace;
-    background-color: #FFF
 }
 
 div.ISMex {
@@ -336,21 +273,6 @@ div.track {
     margin-bottom: 10px
 }
 
-.editTextField {
-    font-weight: bold;
-    font-family: monospace;
-    background-color: #FFF;
-    border: 2px solid;
-    border-color: #BBB #EEE #EEE #BBB;
-    margin: 2px;
-    padding: 2px
-}
-
-div.configDiv {
-    float: left;
-    padding: .5em
-}
-
 .fr {
     float: right
 }
@@ -372,40 +294,6 @@ table.forms td {
 table.forms td.none {
     border: 0px;
     text-align: left
-}
-
-table.forms td.CND {
-    background: #bf7bff
-}
-
-table.forms td.DST {
-    background: #f2ff00
-}
-
-table.forms td.SND {
-    background: #63c169
-}
-
-table.forms td.UPD {
-    background: #ffa000
-}
-
-table.forms td.IMM {
-    background: #8ef395;
-    font-size: .8em;
-    vertical-align: middle
-}
-
-table.forms td.OPC {
-    background: #eee
-}
-
-table.forms td.SRC {
-    background: #00d8ff
-}
-
-table.forms td.bit {
-    background: #fff
 }
 
 span.smaller {
@@ -677,10 +565,6 @@ div.winlist_item:hover,
 div.winlist_item_selected:hover {
     border: 2px black solid;
     overflow: visible
-}
-
-body {
-    margin: 30px 0px 0px 0px
 }
 
 #MainMenuBar {
@@ -1102,26 +986,6 @@ div.tagArea {
 
 div.tag {
     cursor: move
-}
-
-span#hex,
-a.asm_active#disas {
-    font-family: monospace
-}
-
-div.simBP div.plus,
-div.BPitem div.minus {
-    cursor: pointer;
-    margin-left: 3px;
-    margin-right: 7px
-}
-
-div.BPitem div.minus {
-    margin-left: 25px
-}
-
-div.BPitem#off {
-    color: #888
 }
 
 div.tagArea {

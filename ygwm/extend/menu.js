@@ -32,17 +32,6 @@ INIT(menu={
   //    The first element is used as a "key" to find the entry later.
   // func can be a ygwm key string or a normal function. Leave empty if nothing.
   subMenuItem: function(n,langlist,func, sep){
-/* ifdef dev :
-    if (typeof langlist!="object")
-      return alert("subMenuItem: expecting langlist argument to be an array");
-
-    if (!n) {
-      var s="Internal Error",i;
-      for (i in arguments)
-        s+="\n"+i+"="+arguments[i];
-      alert(s);
-    }
-endif*/
     var name=langlist[0], l,
         o=dcE("DIV");
     if (l=n.list[name])
@@ -70,8 +59,6 @@ endif*/
     if (typeof langlist=="string") {
       if (l=menu.list[langlist])
         return l; ////// LOOKUP SHOULD BE DONE WITH menu.list["xyz"]
-      else
-        alert(langlist+" "+I8N("not found"));
     }
     var name=langlist[0],
         m=dcE("DIV"),
@@ -128,7 +115,7 @@ endif*/
       winman.activate_window(winman.keys_list[--menu.key_count]);
     }
     else
-      alert("Elapsed : "+(+new Date()-menu.key_time)+"ms");
+      console.log("Elapsed : "+(+new Date()-menu.key_time)+"ms");
   },
 
   create_menu:function(){
@@ -168,21 +155,8 @@ endif*/
 
   // this sequence makes a first layout to organise the menu,
   // before individual items are created, out of order.
-    menu.mainMenuItem(i8n.Doc,0,i8n.Doct);
 //    menu.mainMenuItem(["Tools","Outils"]); empty, items moved to other menus
 //    menu.mainMenuItem(["Examples","Exemples"]); // To be (re)moved  i8n.Exa
-
-    menu.mainMenuItem(i8n.Tools,0,i8n.vug);
-
-    menu.mainMenuItem(["Sim"],0,i8n.sim);
-    menu.mainMenuItem(["ASM"],0,i8n.asm);
-    menu.mainMenuItem(["GNL"],0,"GNL is Not a Language (not yet functional)");
-//    menu.mainMenuItem(["BASIC"]);  http://hackaday.com/2011/08/28/basic-programming-on-an-arduino/ + Tinybasic.pde
-//    menu.mainMenuItem(["Forth"]);
-//    menu.mainMenuItem(["C"]);
-//    menu.mainMenuItem(["Pascal"]);
-    menu.mainMenuItem(["Tuto"],0,i8n.tuto);
-    menu.mainMenuItem(i8n.Dev,0,i8n.dvpt);
 
  // reverse order for the elements on the right side
   j=menu.mainMenuItem(i8n.win,"R"),
@@ -204,14 +178,12 @@ endif*/
         winlist.closeAll();        
       });
   j=menu.mainMenuItem(["Web"],"R",i8n.web);
-//    t([l+'mailto:whygee%40f-cpu.org">'+I8N("Cont")+'</a>']);
       sublink(i8n.Cont,"mailto:whygee@f-cpu.org");
       sublink(i8n.Dnl,"yasep.tbz");
       sublink(i8n.Lic,"license/agpl.txt");
       t([l+'http://news.yasep.org/">blog</a>']);
       t([l+'https://www.facebook.com/pages/The-YASEP/167478153314916">facebook</a>']);
       t([l+'http://yasep.org">yasep.org</a>']);
-//      t([l+'http://archives.yasep.org">Archives</a>']);
       sublink(i8n.arc,"http://archives.yasep.org");
       t([l+'http://defora.org">defora</a>']);
       sublink(i8n.demo,"http://archives.yasep.org/ygwm.mp4");
@@ -220,3 +192,32 @@ endif*/
 // the rest is moved to gui-js/lang_switcher.js
   }
 });
+
+ygwm.menuClick = function () {
+  var w = parentWin(this),
+      h, a = w.menuButtonInside.style;
+  if (a.display == "none") {
+      a.display = "";
+      w.old_contents = w.contents_id.firstChild;
+      w.old_contents.parentNode.removeChild(w.old_contents);
+      newmenu = dcE("DIV");
+      w.contents_id.appendChild(newmenu);
+      var h = '<h2>' + I8N("Options") + '</h2>' + '<p>' + I8N("wintl") + '<input type="text" size="30" maxlength="250" name="wintitle" onchange="ycWT(this)" value="' + w.winTitle + '"></p>';
+      if (YGCSS) {
+          h += I8N("themes") + "<div>";
+          for (var i in YGCSS.ColorStyles) {
+              h += '<div class="' + i + '" style="position:static;float:left;cursor:pointer;margin:2px;"' + ' onclick="ycT(this,\'' + i + '\')"><div class="ygwm_header">';
+              if (w.className == i) h += "<b>" + i + "</b>";
+              else h += i;
+              h += "</div></div>"
+          }
+          h += '</div><div style="clear:both">' + I8N("hint")
+      }
+      newmenu.innerHTML = h
+  } else {
+      a.display = "none";
+      w.contents_id.firstChild.parentNode.removeChild(w.contents_id.firstChild);
+      w.contents_id.appendChild(w.old_contents);
+      w.old_contents = _
+  }
+};

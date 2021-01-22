@@ -128,19 +128,19 @@ else
 
 <p>This is followed by a few useful functions. <b><tt>I8N()</tt></b> is the most used,
 as it translates a keyword into a localized string, depending on the current chosen language.
-<b><tt>Al8N()</tt></b> is mostly the same except that it creates an alert window and the
+<b><tt>Al8N()</tt></b> is mostly the same except that it creates a console.log and the
 argument can contain litteral strings.</p>
 
 <pre>function I8N(i,t){ // dirty variable generation syntax... t is not a parameter...
   t=i8n[i];
   if (!t)
-    return i; // alert("lang.js: unknown message "+i);
+    return i; // console.log("lang.js: unknown message "+i);
   if (t[LNG])
     return t[LNG];
   return t[0] || i; // if t[0] doesn't exist, return the original parameter.
 } // Note : I8N can return an array of strings. Or anything else in an array stored in i8n.js !
 
-// Alert with a variable length argument,
+// console.log with a variable length argument,
 // interpret "" as followed by a litteral argument,
 // otherwise use an internationalised string :
 function Al8N(){
@@ -151,7 +151,7 @@ function Al8N(){
     else
       s+=I8N(a);
   }
-  alert(s)
+  console.log(s)
 }
 </pre>
 

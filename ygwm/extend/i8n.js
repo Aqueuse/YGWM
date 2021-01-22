@@ -309,3 +309,74 @@ i8n = {
     ferm: ["Erase method", "Méthode d'effacement"],
     fct: ["Chip Type", "Type de mémoire"]
 };
+
+LANG = {
+    supported: false,
+    override: false,
+    LN: "",
+    FLAGS: [],
+    change_innerHTML: [],
+    change_lang: function (i) {
+        i = +i;
+        var j, k;
+        if ((i < 0) || (i >= i8n.LANGS.length)) i = 0;
+        lsPut("Lang", LANG.LN = i8n.LANGS[LNG = i]);
+        changeMainWinTitle(I8N("welc").replace(/&nbsp;/gi, " "));
+        for (j in LANG.change_innerHTML) {
+            if (k = LANG.change_innerHTML[j]) k[0].innerHTML = k[1][i] || k[1][0]
+        }
+    }
+};
+
+browsLang = (navigator.language || navigator.browserLanguage).slice(0, 2);
+if (i = lsGet("Lang")) {
+    browsLang = i;
+    LANG.override = true
+}
+if ((i =window.location.hash).indexOf("#lang=") == 0) {
+    browsLang = i.slice(6);
+    LANG.override = true
+}
+
+LNG = i8n.LANGS.indexOf(browsLang);
+if (LNG < 0) LNG = 0;
+else LANG.supported = true;
+
+function I8N(i, t) {
+    t = i8n[i];
+    if (!t) return i;
+    if (t[LNG]) return t[LNG];
+    return t[0] || i
+}
+
+function Al8N() {
+    var i = 0,
+        s = "",
+        t, a, l = LNG;
+    while (typeof (a = arguments[i++]) != "undefined") {
+        if (a == "") s += arguments[i++];
+        else s += I8N(a)
+    }
+    console.log(s)
+}
+
+if (!window.I8N) {
+    I8N = function (m) {
+        return m
+    };
+    Al8N = function (m) {
+        console.log(m)
+    }
+}
+
+function generated(c, tool) {
+    return "\n" + c + " " + I8N("Generated on") + " " + newDate().toGMTString() + "\n" + c + " " + I8N("by") + " " + document.location + "\n" + c + "    yasep/" + tool + " " + I8N("version") + " " + VERSION + "\n"
+}
+
+function setHTML(o, t) {
+    if (typeof t != "string") {
+        if (t.length > 1) LANG.change_innerHTML.push([o, t]);
+        t = t[LNG] || t[0]
+    }
+    o.innerHTML = t
+};

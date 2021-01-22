@@ -24,12 +24,12 @@ winman={
     if (typeof m != "number")
       m=1; // only one window by default
     if ((typeof key != "string") || (typeof f != "function"))
-      return alert("Bug\nregister_key : wrong argument type");
+      console.log("Bug\nregister_key : wrong argument type");
     if (winman.window_keys[key]) {
       if (key.substr(0,4) == "ISM/")
         return;  // allow several redefinitions of the same key if we register an ISM key
       else
-        alert('Bug\nkey "'+key+'" already registered');
+        console.log('Bug\nkey "'+key+'" already registered');
     };
     winman.window_keys[key]={
       n:key,
@@ -103,7 +103,7 @@ winman={
     // scan the eventual alias linked list (smart lookup, subtleties inside)
     do{
       if (!w[v]) {
-        alert(I8N("R")+I8N("WrnKey")+"\n"+key);
+        console.log(I8N("R")+I8N("WrnKey")+"\n"+key);
         return false;
       }
       v2=v;
@@ -271,5 +271,10 @@ winman={
 function hiddenText(key,base){
   return getById("hidden"+key,"SPAN",base).innerHTML;
 }
+
+for (var i in key_list) {
+  var j = key_list[i];
+  if (j[1]) winman.register_key(j[0], j[1].start, j[2])
+};
 
 wa=winman.activate_window; // HTML ALIAS (resistant to compaction)

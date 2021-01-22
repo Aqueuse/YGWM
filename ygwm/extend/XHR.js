@@ -70,3 +70,69 @@ function import_htmi(namebase,l) {
   else // try with the default language
     return import_htmi(namebase,0);
 }
+
+function lsGet(k) {
+  return localStorage.getItem(k)
+}
+
+function lsPut(k, s) {
+  try {
+      localStorage[k] = s
+  } catch (e) {
+      console.log('Setting localStorage key="' + k + '"failed\nPossible causes: quota exceeded or unsafe request origin')
+  }
+}
+
+function dump_LS() {
+  var i, k, l, s = "localStorage contents :\n";
+  if (window.localStorage) {
+      if (l = localStorage.length) {
+          for (i = 0; i < l; i++) {
+              k = localStorage.key(i);
+              s += k + ' = ' + localStorage.getItem(k) + '\n'
+          }
+      } else s += "(nothing)"
+  }
+  return s
+};
+
+if (window.localStorage) {
+  if (localStorage.Lang) first_run = false
+}
+else {
+  localStorage = {
+      length: 0,
+      removeItem: function (key) {}
+  }
+}
+
+function start_iterate(i) {
+  var k, l, w, n = localStorage.key(i++),
+      c;
+  if (n.indexOf("Win_") == 0) {
+      c = lsGet(n).split(" ");
+      l = +c[0];
+      n = n.slice(4);
+      if (winman.window_keys[n]) {
+          w = wa(n);
+          if (typeof w == "object") {
+              if (l < 0) {
+                  l = -l;
+                  ygwm.hide_all(w)
+              }
+              ygwm.move(w, l, +c[1]);
+              ygwm.changeDimensions(+c[2], +c[3], w);
+              winman.coord_ondrop(w);
+              wincount++
+          }
+      }
+  }
+  if (i < localStorage.length) {
+      redraw(function () {
+          start_iterate(i)
+      })
+  } else {
+      if (!wincount) wa("welcome");
+      if ((i =window.location.hash).indexOf("#!") == 0) wa(i.slice(2))
+  }
+};

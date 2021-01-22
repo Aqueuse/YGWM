@@ -1,0 +1,43 @@
+/*  gui-js/dragNdrop.css
+derived from tool/listed.css, created Mon Feb 16 18:21:54 CET 2009 
+lun. févr. 13 12:01:22 CET 2012 : tool/YASMed.css
+sam. mai  5 22:37:11 CEST 2012 : gui-js/dragNdrop.css
+*/
+
+div#trash_div {
+  width:100px;
+  position:fixed;
+  top: 41px;
+  right: 5px;
+  z-index: 100; /* The elements that prevent autoscroll must be
+    "manually" set to zIndex >= ygwm.noScrollIndex in the JS code. */
+  overflow:visible;
+}
+
+div#trash_frame{
+  width: 48px;
+  overflow:hidden;
+  height:99px;
+  float:right;
+}
+
+img#trash_image{
+  position: relative;
+  right:0px;
+}
+
+div#trash_msg{
+  clear:both;
+  height:100px;
+  text-align : right;
+  vertical-align : bottom;
+  font-style: italic;
+}
+
+div#transport{ /* This will contain the moved item, to solve the z-index issues */
+  position:absolute;
+  width:0px;
+  height:0px;
+  /* overflow : display */
+  z-index: 100; /*same as above, must be patched in JS */
+}

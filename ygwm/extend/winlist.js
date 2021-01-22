@@ -32,13 +32,6 @@ winlist_fg:
    contains the items,
    height left to the browser and read to set the height of winlist_bg
 
-20110829 : solved the winlist height/resize issue by adding winlist_fg,
-    added colors to the items, started support of winlist.list
-20111123 : doubleclick on the items => group hide/show
-      25 : using timeStamp instead on getTime,
-             changing winlist.list to a "holed" list (using delete)
-20120213 : little bug solved in change_window (not sure it's the end of it but it works now)
-20121013 : added closeAll
 */
 
 INIT(winlist={
@@ -82,7 +75,7 @@ INIT(winlist={
   },
 
   removeItem:function(win){
-    rC(win.winlist_item_id);
+    win.winlist_item_id.parentNode.removeChild(win.winlist_item_id);
 
     var i=win.winlist_index;
 //  winlist.list.splice(win.winlist_index,1); // remove from list  NOOOO!
