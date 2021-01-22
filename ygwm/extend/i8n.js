@@ -346,7 +346,7 @@ function I8N(i, t) {
     t = i8n[i];
     if (!t) return i;
     if (t[LNG]) return t[LNG];
-    return t[0] || i
+    return t[0] || i;
 }
 
 function Al8N() {
@@ -355,22 +355,22 @@ function Al8N() {
         t, a, l = LNG;
     while (typeof (a = arguments[i++]) != "undefined") {
         if (a == "") s += arguments[i++];
-        else s += I8N(a)
+        else s += I8N(a);
     }
     console.log(s)
 }
 
 if (!window.I8N) {
     I8N = function (m) {
-        return m
+        return m;
     };
     Al8N = function (m) {
-        console.log(m)
+        console.log(m);
     }
 }
 
 function generated(c, tool) {
-    return "\n" + c + " " + I8N("Generated on") + " " + newDate().toGMTString() + "\n" + c + " " + I8N("by") + " " + document.location + "\n" + c + "    yasep/" + tool + " " + I8N("version") + " " + VERSION + "\n"
+    return "\n" + c + " " + I8N("Generated on") + " " + newDate().toGMTString() + "\n" + c + " " + I8N("by") + " " + document.location + "\n" + c + "    yasep/" + tool + " " + I8N("version") + " " + VERSION + "\n";
 }
 
 function setHTML(o, t) {
@@ -378,5 +378,5 @@ function setHTML(o, t) {
         if (t.length > 1) LANG.change_innerHTML.push([o, t]);
         t = t[LNG] || t[0]
     }
-    o.innerHTML = t
+    o.innerHTML = t;
 };

@@ -122,15 +122,7 @@ INIT(menu={
     (menu.mainMenu_id=dcE("DIV")).id="MainMenuBar";
     document.body.appendChild(menu.mainMenu_id);
   },
-/*
-  close_all:function(){
-    menu.key_count=0;
-    var w=ygwm.top_window.previousSibling;
-    if(w.winTitle){
-      ygwm.erase_window(w);
-    }
-  },
-*/
+
 ///////////////////////////////////////////////////////////////////////////
   // Build a YASEP-specific menu :
   INIT_func: function(){
@@ -148,7 +140,7 @@ INIT(menu={
       e.innerHTML=""; //erase the string that was put
       e.appendChild(a);
       LANG.change_innerHTML.push([a,g]);
-//      return e;
+      return e;
     }
 
     menu.create_menu();
@@ -188,8 +180,6 @@ INIT(menu={
       t([l+'http://defora.org">defora</a>']);
       sublink(i8n.demo,"http://archives.yasep.org/ygwm.mp4");
       sublink(i8n.ygwmd,"gui-js/ygwm.html");
-
-// the rest is moved to gui-js/lang_switcher.js
   }
 });
 

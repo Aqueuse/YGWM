@@ -5,8 +5,6 @@ mainTitle = "";
 
 i = "requestAnimationFrame";
 
-INIT_list = [];
-
 function dcE(a) {
     return document.createElement(a);
 }
@@ -42,7 +40,7 @@ function mousePos(e) {
     return {
         x: e.pageX || e.clientX + t.scrollLeft,
         y: e.pageY || e.clientY + t.scrollTop
-    }
+    };
 }
 
 function getHeight() {
@@ -87,67 +85,44 @@ function delay(o) {
     }
 }
 
-function cleanup_table(id) {
-    var t = id.firstChild,
-        t2;
-    while (t) {
-        t2 = t.nextSibling;
-        switch (t.nodeName) {
-            case "TBODY":
-            case "TR":
-                cleanup_table(t);
-            case "TH":
-            case "TD":
-                break;
-            default:
-                t.parentNode.removeChild(t)
-        }
-        t = t2
-    }
-}
-
 function parentWin(w) {
     while (w) {
         if (w.contents_id) break;
         w = w.parentNode
     }
-    return w
+    return w;
 }
 
 function intrnd(x) {
-    returnMath.floor(F.random() * x)
+    return Math.floor(F.random() * x);
 }
 
 function pad_right(s, n) {
     n -= (s + "").length;
     while (n-- > 0) s += " ";
-    return s
+    return s;
 }
 
 function pad_left(s, n) {
     n -= (s + "").length;
     while (n-- > 0) s = " " + s;
-    return s
+    return s;
 }
 
 function Clone() {}
 
 function clone(obj) {
     Clone.prototype = obj;
-    return new Clone()
+    return new Clone();
 }
 
 function dontMess(id) {
-    id.autocorrect = id.autocomplete = id.autocapitalize = id.spellcheck = false
+    id.autocorrect = id.autocomplete = id.autocapitalize = id.spellcheck = false;
 };
 
 
 function changeMainWinTitle(m) {
-    document.title = mainTitlePrefix + (mainTitle = m)
-};
-
-function INIT(o) {
-    INIT_list.push(o)
+    document.title = mainTitlePrefix + (mainTitle = m);
 };
 
 ygwm = {
@@ -192,9 +167,9 @@ ygwm = {
             if (where.winlist_item_id) winlist.removeItem(where);
             if (where.eraseCallback) where.eraseCallback(where);
             where.parentNode.removeChild(where);
-            for (var i in where) delete where[i]
+            for (var i in where) delete where[i];
         }
-        return false
+        return false;
     },
     empty_callback: function () {
         ygwm.latencyTimeOut = null;
@@ -205,7 +180,7 @@ ygwm = {
         i.contents_id.firstChild.style.display = "block";
         i.contents_id.scrollLeft = i.lastScrollLeft;
         i.contents_id.scrollTop = i.lastScrollTop;
-        ygwm.latencyTimeOut = setTimeout(ygwm.empty_callback, 0)
+        ygwm.latencyTimeOut = setTimeout(ygwm.empty_callback, 0);
     },
     autoScroll: function (e) {
         e = e ||window.event;
@@ -226,7 +201,7 @@ ygwm = {
             h = (e.clientY + ygwm.autoScrollThreshold) - getHeight();
             if ((h > 0) && (p.y + h < ygwm.max_coord)) scrollY = h
         }
-       window.scrollBy(scrollX, scrollY)
+       window.scrollBy(scrollX, scrollY);
     },
     mouse_move_callback: function (e) {
         var p, d = new Date().getTime();
@@ -235,7 +210,7 @@ ygwm = {
             ygwm.moved_div.lastScrollLeft = ygwm.moved_div.contents_id.scrollLeft;
             ygwm.moved_div.lastScrollTop = ygwm.moved_div.contents_id.scrollTop;
             ygwm.moved_div.contents_id.firstChild.style.display = "none";
-            ygwm.slowDisplay = true
+            ygwm.slowDisplay = true;
         }
         clearTimeout(ygwm.latencyTimeOut);
         ygwm.latencyTimeOut = null;
@@ -245,32 +220,32 @@ ygwm = {
         ygwm.autoScroll(e);
         if (ygwm.slowDisplay) ygwm.latencyTimeOut = setTimeout(ygwm.redraw_callback, ygwm.redrawDelay);
         else ygwm.latencyTimeOut = setTimeout(ygwm.empty_callback, 0);
-        return false
+        return false;
     },
     mouse_cornerSE: function (x, y) {
-        ygwm.changeDimensions(x - ygwm.mouse_xoffset, y - ygwm.mouse_yoffset, ygwm.moved_div)
+        ygwm.changeDimensions(x - ygwm.mouse_xoffset, y - ygwm.mouse_yoffset, ygwm.moved_div);
     },
     mouse_cornerSW: function (x, y) {
         var w, h = y - ygwm.mouse_yoffset,
             l = x - ygwm.mouse_xoffset;
         if (l < 3) {
             l = 3;
-            x = ygwm.mouse_xoffset + 3
+            x = ygwm.mouse_xoffset + 3;
         }
         w = -(x - ygwm.mouse_xoffset2);
         if (w < ygwm.min_width) {
             w = ygwm.min_width;
-            l = ygwm.mouse_xoffset2 - (ygwm.min_width + ygwm.mouse_xoffset)
+            l = ygwm.mouse_xoffset2 - (ygwm.min_width + ygwm.mouse_xoffset);
         }
         if (l > ygwm.max_coord) return;
         ygwm.move(ygwm.moved_div, l, ygwm.moved_div.y);
-        ygwm.changeDimensions(w, h, ygwm.moved_div)
+        ygwm.changeDimensions(w, h, ygwm.moved_div);
     },
     mouse_drag: function (x, y) {
         x -= ygwm.mouse_xoffset;
         y -= ygwm.mouse_yoffset;
         if ((x > ygwm.max_coord) || (y > ygwm.max_coord)) return;
-        ygwm.move(ygwm.moved_div, x, y)
+        ygwm.move(ygwm.moved_div, x, y);
     },
     mouse_drop: function () {
         var y = ygwm.moved_div,
@@ -280,7 +255,7 @@ ygwm = {
         clearTimeout(ygwm.latencyTimeOut);
         if (typeof y.ondrop == "function") y.ondrop(y);
         ygwm.latencyTimeOut = ygwm.moved_div = document.onmousemove = document.onmouseup = ygwm.action_function = null;
-        return false
+        return false;
     },
     hook: function (e, where, callback) {
         if (document.onmouseup) document.onmouseup(e);
@@ -304,7 +279,7 @@ ygwm = {
             w = parentWin(this);
         ygwm.mouse_xoffset = p.x - w.contents_id.offsetWidth;
         ygwm.mouse_yoffset = p.y - w.contents_id.offsetHeight;
-        return ygwm.hook(e, w, ygwm.mouse_cornerSE)
+        return ygwm.hook(e, w, ygwm.mouse_cornerSE);
     },
     hook_resizeSW: function (e) {
         var p = mousePos(e),
@@ -312,12 +287,12 @@ ygwm = {
         ygwm.mouse_xoffset = p.x - w.offsetLeft;
         ygwm.mouse_xoffset2 = p.x + w.contents_id.offsetWidth;
         ygwm.mouse_yoffset = p.y - w.contents_id.offsetHeight;
-        return ygwm.hook(e, w, ygwm.mouse_cornerSW)
+        return ygwm.hook(e, w, ygwm.mouse_cornerSW);
     },
     click_minimize: function (e) {
         var w = parentWin(this);
         if (w.really_hide) ygwm.hide_all(w);
-        else ygwm.showhide(null, w)
+        else ygwm.showhide(null, w);
     },
     showhide: function (e, win, p) {
         if (document.onmouseup) document.onmouseup(e);
@@ -326,13 +301,13 @@ ygwm = {
         if (p.contents_id.style.display == "none") {
             this.className = "ygwm_corner_minimize";
             p.contents_id.style.display = "block";
-            if (p.footer_id) p.footer_id.style.display = "block"
+            if (p.footer_id) p.footer_id.style.display = "block";
         } else {
             this.className = "ygwm_corner_maximize";
             p.contents_id.style.display = "none";
-            if (p.footer_id) p.footer_id.style.display = "none"
+            if (p.footer_id) p.footer_id.style.display = "none";
         }
-        return false
+        return false;
     },
     center_window_obj: {
         w: null,
@@ -344,12 +319,12 @@ ygwm = {
             var w = ygwm.center_window_obj.w;
             if (window.menu) ygwm.min_coord_y = menu.mainMenu_id.scrollHeight;
             if (((w.w + 30) > getWidth()) || ((w.h + 50) > getHeight()))window.scrollTo(w.x, w.y - ygwm.min_coord_y);
-            else window.scrollTo(((w.w - getWidth()) >> 1) + w.x, ((w.h - getHeight()) >> 1) + w.y)
+            else window.scrollTo(((w.w - getWidth()) >> 1) + w.x, ((w.h - getHeight()) >> 1) + w.y);
         }
     },
     center_window: function (w) {
         ygwm.center_window_obj.w = w;
-        delay(ygwm.center_window_obj)
+        delay(ygwm.center_window_obj);
     },
     focus_window: function (e, where, no) {
         where = where || parentWin(this);
@@ -362,7 +337,7 @@ ygwm = {
                     if (ygwm.last_focus.header_id) ygwm.last_focus.header_id.className = "ygwm_header";
                     if (ygwm.last_focus.winlist_item_id) {
                         ygwm.last_focus.winlist_item_id.className = "winlist_item";
-                        if (window.YGCSS && YGCSS.ColorStyles[ygwm.last_focus.className]) ygwm.last_focus.winlist_item_id.style.backgroundColor = YGCSS.ColorStyles[ygwm.last_focus.className].split(",")[5]
+                        if (window.YGCSS && YGCSS.ColorStyles[ygwm.last_focus.className]) ygwm.last_focus.winlist_item_id.style.backgroundColor = YGCSS.ColorStyles[ygwm.last_focus.className].split(",")[5];
                     }
                 }
                 where.parentNode.insertBefore(where, ygwm.top_window);
@@ -371,12 +346,12 @@ ygwm = {
                 if (where.header_id) where.header_id.className = "ygwm_header_selected";
                 if (where.winlist_item_id) {
                     where.winlist_item_id.className = "winlist_item_selected";
-                    if (window.YGCSS && YGCSS.ColorStyles[where.className]) where.winlist_item_id.style.backgroundColor = YGCSS.ColorStyles[where.className].split(",")[3]
+                    if (window.YGCSS && YGCSS.ColorStyles[where.className]) where.winlist_item_id.style.backgroundColor = YGCSS.ColorStyles[where.className].split(",")[3];
                 }
                 ygwm.last_focus = where;
             }
         }
-        return true
+        return true;
     },
     changeDimensions: function (w, h, where) {
         if (w < ygwm.min_width) w = ygwm.min_width;
@@ -407,7 +382,7 @@ ygwm = {
             this.title = I8N("maximize");
             ygwm.changeDimensions(w.original_width, w.original_height, w);
         }
-        ygwm.center_window(w)
+        ygwm.center_window(w);
     },
     hide_all: function (w) {
         w.style.display = "none";
@@ -451,7 +426,7 @@ ygwm = {
             if (ygwm.menuClick) z += '<div class="roundButton7" title="' + o + '"><\/div>' + '<div class="roundButton3" title="' + o + '"><\/div>' + '<div class="roundButton7margin" title="' + o + '"><\/div>';
             z += ' <div class="ygwm_button_maximize" title="' + I8N("maximize") + '"><\/div>';
             if (close_button) z += ' <div class="ygwm_corner_close" title="' + I8N("close") + '"><\/div>';
-            z += ' <div class="ygwm_corner_minimize" title="' + I8N("minimize") + '"><\/div>' + ' <div class="ygwm_header_name">' + winTitle + '<\/div>' + '<\/div>'
+            z += ' <div class="ygwm_corner_minimize" title="' + I8N("minimize") + '"><\/div>' + ' <div class="ygwm_header_name">' + winTitle + '<\/div>' + '<\/div>';
         }
         z += '<div class="ygwm_contents"><\/div>';
         if (footer) z += '<div class="ygwm_footer">' + ' <div class="ygwm_cornerSW"><\/div>' + ' <div class="ygwm_cornerSE"><\/div>' + ' <div class="ygwm_msg"><\/div>' + '<\/div>';
@@ -465,7 +440,7 @@ ygwm = {
                 new_id.menuButton.onclick = ygwm.menuClick;
                 new_id.menuButtonInside = getByClass("roundButton3", "DIV", new_id.header_id);
                 new_id.menuButtonInside.style.display = "none";
-                new_id.menuButtonInside.onclick = ygwm.menuClick
+                new_id.menuButtonInside.onclick = ygwm.menuClick;
             }
             if (close_button) getByClass("ygwm_corner_close", "DIV", new_id.header_id).onclick = ygwm.erase_window;
             new_id.erase_callback = erase_callback;
@@ -476,17 +451,17 @@ ygwm = {
         new_id.contents_id = getByClass("ygwm_contents", "DIV", new_id);
         if (contents) {
             if (contents != "none") where = contents;
-            else where = dcE("DIV")
+            else where = dcE("DIV");
         }
         new_id.contents_id.appendChild(where);
         if (footer) {
             new_id.footer_id = getByClass("ygwm_footer", "DIV", new_id);
             new_id.messsage_id = getByClass("ygwm_msg", "DIV", new_id.footer_id);
             new_id.shortmsg = function (msg) {
-                new_id.messsage_id.innerHTML = msg
+                new_id.messsage_id.innerHTML = msg;
             };
             new_id.erase_msg = function () {
-                new_id.messsage_id.innerHTML = ""
+                new_id.messsage_id.innerHTML = "";
             };
             getByClass("ygwm_cornerSE", "DIV", new_id.footer_id).onmousedown = ygwm.hook_resizeSE;
             getByClass("ygwm_cornerSW", "DIV", new_id.footer_id).onmousedown = ygwm.hook_resizeSW;
@@ -498,12 +473,12 @@ ygwm = {
         if (window.winlist) winlist.addWindow(new_id, winTitle, win_style);
         (new_id.onmousedown = ygwm.focus_window)(null, new_id);
         ygwm.center_window(new_id);
-        return new_id
+        return new_id;
     }
 };
 
 ycWT = ygwm.changeWinTitle;
 
 function hiddenText(key, base) {
-    return getById("hidden" + key, "SPAN", base).innerHTML
+    return getById("hidden" + key, "SPAN", base).innerHTML;
 }

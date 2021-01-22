@@ -1,3 +1,9 @@
+INIT_list=[]; // cookies, menu, winlist, test_asm, OpcodeTable, asmwin, DOC_GEN, DEF_ASM, template...
+
+function INIT(o){
+  INIT_list.push(o); // add the new module to the list
+}
+
 INIT(Welcome = {
     start: function () {
         w = getById("main-" + LANG.LN, "div", Welcome.div) ||
@@ -37,5 +43,5 @@ key_list = [
     for (i in INIT_list) INIT_list[i].INIT_func();
     LANG.change_lang(LNG);
     wincount = 0;
-    start_iterate(0)
+    start_iterate(0);
 }

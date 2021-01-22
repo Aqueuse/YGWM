@@ -34,8 +34,9 @@ function adjustHeight_click(e){
   document.onmousemove=function(e){ // closure ;-)
     e.stopPropagation();
     var h=mousePos(e).y+aH_Y;
-    if (h<30)
+    if (h<30) {
       h=30;
+    }
     aH_div.style.height=h+"px";
     return false;
   };

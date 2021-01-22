@@ -126,7 +126,7 @@ version : 20120512 : new "mussel" theme, some cleanup
     catch(i){
       YGCSS.insertCssRule=function(){};
       console.log("styleSheets are missing");
-      return
+      return;
     }
 
     var a=">div.ygwm_header ", i,
@@ -172,10 +172,9 @@ version : 20120512 : new "mussel" theme, some cleanup
   changeTheme: function(t, theme) {
     var where=parentWin(t);
     where.className=theme;
-    if (where.winlist_item_id){
+    if (where.winlist_item_id) {
       if (YGCSS.ColorStyles[where.className])
-        where.winlist_item_id.style.backgroundColor
-          =YGCSS.ColorStyles[where.className].split(",")[4];
+        where.winlist_item_id.style.backgroundColor = YGCSS.ColorStyles[where.className].split(",")[4];
     }
   },
 
