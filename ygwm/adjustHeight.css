@@ -1,0 +1,11 @@
+/*  gui-js/adjustHeight.css
+created sam. oct. 13 06:10:31 CEST 2012 by whygee@f-cpu.org
+*/
+div.adjHeight{
+  cursor:n-resize;
+  font-family:sans-serif;
+  font-size:130%;
+  position:absolute;
+  right:1em;
+  bottom:0px;
+}

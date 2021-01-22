@@ -1,0 +1,51 @@
+/*
+gui-js/ygwm-winlist.css
+created lun. aout 29 19:26:49 CEST 2011 by whygee@f-cpu.org (split from gui-js/ygwm.css)
+
+These are the winlist-centric definitions.
+*/
+
+#winlist{
+  border-bottom:0px;
+  margin: 0px; /* ? */
+  width: 190px;
+  left:25px;
+  bottom: 0px;
+  z-index:1000; /* above everybody */
+  position: fixed; /* moves with the scrolls */
+}
+
+#winlist>div.ygwm_header,
+#winlist>div.ygwm_header_selected {
+  color: #000;
+  cursor: pointer;
+}
+
+#winlist_name {
+  width: 153px; /* 180-20 - margins */
+  float: left;
+}
+
+#winlist_bg {
+  padding: 0px;
+  background-color:#F0F0F0;
+  overflow: auto;
+}
+
+div.winlist_item,
+div.winlist_item_selected{
+  color: #000;
+  border:2px white solid;
+  overflow: hidden;
+  cursor: pointer;
+}
+div.winlist_item_selected{
+  background-color:#D0D0D0;
+}
+
+div.winlist_item:hover,
+div.winlist_item_selected:hover{
+  border:2px black solid;
+  overflow:visible;
+}
+
